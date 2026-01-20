@@ -1,0 +1,548 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		42C46FFF2F1F3C5400659186 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42C46FE82F1F3C5200659186 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42C46FEF2F1F3C5200659186;
+			remoteInfo = YearView;
+		};
+		42C470092F1F3C5400659186 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42C46FE82F1F3C5200659186 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42C46FEF2F1F3C5200659186;
+			remoteInfo = YearView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		42C46FF02F1F3C5200659186 /* YearView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YearView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42C46FFE2F1F3C5400659186 /* YearViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YearViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42C470082F1F3C5400659186 /* YearViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YearViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		42C46FF22F1F3C5200659186 /* YearView */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = YearView;
+			sourceTree = "<group>";
+		};
+		42C470012F1F3C5400659186 /* YearViewTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = YearViewTests;
+			sourceTree = "<group>";
+		};
+		42C4700B2F1F3C5400659186 /* YearViewUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = YearViewUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42C46FED2F1F3C5200659186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42C46FFB2F1F3C5400659186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42C470052F1F3C5400659186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42C46FE72F1F3C5200659186 = {
+			isa = PBXGroup;
+			children = (
+				42C46FF22F1F3C5200659186 /* YearView */,
+				42C470012F1F3C5400659186 /* YearViewTests */,
+				42C4700B2F1F3C5400659186 /* YearViewUITests */,
+				42C46FF12F1F3C5200659186 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		42C46FF12F1F3C5200659186 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42C46FF02F1F3C5200659186 /* YearView.app */,
+				42C46FFE2F1F3C5400659186 /* YearViewTests.xctest */,
+				42C470082F1F3C5400659186 /* YearViewUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42C46FEF2F1F3C5200659186 /* YearView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42C470122F1F3C5400659186 /* Build configuration list for PBXNativeTarget "YearView" */;
+			buildPhases = (
+				42C46FEC2F1F3C5200659186 /* Sources */,
+				42C46FED2F1F3C5200659186 /* Frameworks */,
+				42C46FEE2F1F3C5200659186 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				42C46FF22F1F3C5200659186 /* YearView */,
+			);
+			name = YearView;
+			packageProductDependencies = (
+			);
+			productName = YearView;
+			productReference = 42C46FF02F1F3C5200659186 /* YearView.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42C46FFD2F1F3C5400659186 /* YearViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42C470152F1F3C5400659186 /* Build configuration list for PBXNativeTarget "YearViewTests" */;
+			buildPhases = (
+				42C46FFA2F1F3C5400659186 /* Sources */,
+				42C46FFB2F1F3C5400659186 /* Frameworks */,
+				42C46FFC2F1F3C5400659186 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42C470002F1F3C5400659186 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				42C470012F1F3C5400659186 /* YearViewTests */,
+			);
+			name = YearViewTests;
+			packageProductDependencies = (
+			);
+			productName = YearViewTests;
+			productReference = 42C46FFE2F1F3C5400659186 /* YearViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		42C470072F1F3C5400659186 /* YearViewUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42C470182F1F3C5400659186 /* Build configuration list for PBXNativeTarget "YearViewUITests" */;
+			buildPhases = (
+				42C470042F1F3C5400659186 /* Sources */,
+				42C470052F1F3C5400659186 /* Frameworks */,
+				42C470062F1F3C5400659186 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42C4700A2F1F3C5400659186 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				42C4700B2F1F3C5400659186 /* YearViewUITests */,
+			);
+			name = YearViewUITests;
+			packageProductDependencies = (
+			);
+			productName = YearViewUITests;
+			productReference = 42C470082F1F3C5400659186 /* YearViewUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		42C46FE82F1F3C5200659186 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					42C46FEF2F1F3C5200659186 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					42C46FFD2F1F3C5400659186 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 42C46FEF2F1F3C5200659186;
+					};
+					42C470072F1F3C5400659186 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 42C46FEF2F1F3C5200659186;
+					};
+				};
+			};
+			buildConfigurationList = 42C46FEB2F1F3C5200659186 /* Build configuration list for PBXProject "YearView" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 42C46FE72F1F3C5200659186;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 42C46FF12F1F3C5200659186 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42C46FEF2F1F3C5200659186 /* YearView */,
+				42C46FFD2F1F3C5400659186 /* YearViewTests */,
+				42C470072F1F3C5400659186 /* YearViewUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		42C46FEE2F1F3C5200659186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42C46FFC2F1F3C5400659186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42C470062F1F3C5400659186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42C46FEC2F1F3C5200659186 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42C46FFA2F1F3C5400659186 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42C470042F1F3C5400659186 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42C470002F1F3C5400659186 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42C46FEF2F1F3C5200659186 /* YearView */;
+			targetProxy = 42C46FFF2F1F3C5400659186 /* PBXContainerItemProxy */;
+		};
+		42C4700A2F1F3C5400659186 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42C46FEF2F1F3C5200659186 /* YearView */;
+			targetProxy = 42C470092F1F3C5400659186 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		42C470102F1F3C5400659186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		42C470112F1F3C5400659186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		42C470132F1F3C5400659186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = YearView/YearView.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = NO;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Richard-Production.YearView";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		42C470142F1F3C5400659186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = YearView/YearView.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Richard-Production.YearView";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		42C470162F1F3C5400659186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Richard-Production.YearViewTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YearView.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YearView";
+			};
+			name = Debug;
+		};
+		42C470172F1F3C5400659186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Richard-Production.YearViewTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YearView.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YearView";
+			};
+			name = Release;
+		};
+		42C470192F1F3C5400659186 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Richard-Production.YearViewUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = YearView;
+			};
+			name = Debug;
+		};
+		42C4701A2F1F3C5400659186 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Richard-Production.YearViewUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = YearView;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42C46FEB2F1F3C5200659186 /* Build configuration list for PBXProject "YearView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42C470102F1F3C5400659186 /* Debug */,
+				42C470112F1F3C5400659186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42C470122F1F3C5400659186 /* Build configuration list for PBXNativeTarget "YearView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42C470132F1F3C5400659186 /* Debug */,
+				42C470142F1F3C5400659186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42C470152F1F3C5400659186 /* Build configuration list for PBXNativeTarget "YearViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42C470162F1F3C5400659186 /* Debug */,
+				42C470172F1F3C5400659186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42C470182F1F3C5400659186 /* Build configuration list for PBXNativeTarget "YearViewUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42C470192F1F3C5400659186 /* Debug */,
+				42C4701A2F1F3C5400659186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 42C46FE82F1F3C5200659186 /* Project object */;
+}
