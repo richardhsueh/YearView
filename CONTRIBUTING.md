@@ -7,7 +7,7 @@ Thank you for your interest in contributing to YearView! This document provides 
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/yourusername/yearview.git
+   git clone https://github.com/richardhsueh/YearView.git
    ```
 3. Open the Xcode project:
    ```bash

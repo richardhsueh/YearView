@@ -43,8 +43,8 @@ The wallpaper displays a yearly calendar with your selected theme:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/yearview.git
-   cd yearview
+   git clone https://github.com/richardhsueh/YearView.git
+   cd YearView
    ```
 
 2. Open the Xcode project:
