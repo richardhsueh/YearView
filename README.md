@@ -155,6 +155,12 @@ YearView/
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
+## Support Me
+
+If you find YearView useful and would like to support its development, consider buying me a coffee!
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-yellow?style=for-the-badge&logo=buy-me-a-coffee)](https://buymeacoffee.com/richardhsueh)
+
 ## Credits
 
 - Theme colors inspired by [typings.gg](https://github.com/briano1905/typings) by [@briano1905](https://github.com/briano1905)
