@@ -11,7 +11,7 @@ struct YearViewApp: App {
     }
     
     var body: some Scene {
-        MenuBarExtra("Calendar", systemImage: "calendar") {
+        MenuBarExtra("Calendar", image: "MenuBarIcon") {
             MenuContentView()
                 .environmentObject(wallpaperService)
                 .environmentObject(themeStore)
