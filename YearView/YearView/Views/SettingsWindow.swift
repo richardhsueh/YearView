@@ -66,6 +66,7 @@ struct SettingsWindow: View {
         .onChange(of: layoutSettings.verticalDaySpacing) { _ in updateWallpaperLive() }
         .onChange(of: layoutSettings.fontFamily) { _ in updateWallpaperLive() }
         .onChange(of: layoutSettings.markPassedDays) { _ in updateWallpaperLive() }
+        .onChange(of: layoutSettings.showWeekendHighlight) { _ in updateWallpaperLive() }
         .onChange(of: themeStore.currentTheme) { _ in updateWallpaperLive() }
     }
     
@@ -207,23 +208,43 @@ struct SettingsWindow: View {
             
             // Display Options
             SettingsSection(title: "Display Options", icon: "eye") {
-                Toggle(isOn: $layoutSettings.markPassedDays) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(.accentColor)
-                        
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Mark Passed Days")
-                                .font(.system(size: 13, weight: .semibold))
+                VStack(alignment: .leading, spacing: 12) {
+                    Toggle(isOn: $layoutSettings.markPassedDays) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(.accentColor)
                             
-                            Text("Draw a cross on days that have passed")
-                                .font(.system(size: 11, weight: .regular))
-                                .foregroundColor(.secondary)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Mark Passed Days")
+                                    .font(.system(size: 13, weight: .semibold))
+                                
+                                Text("Draw a cross on days that have passed")
+                                    .font(.system(size: 11, weight: .regular))
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
+                    .toggleStyle(.switch)
+                    
+                    Toggle(isOn: $layoutSettings.showWeekendHighlight) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "calendar.badge.clock")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(.accentColor)
+                            
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Highlight Weekends")
+                                    .font(.system(size: 13, weight: .semibold))
+                                
+                                Text("Show background color on weekend days")
+                                    .font(.system(size: 11, weight: .regular))
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .toggleStyle(.switch)
                 }
-                .toggleStyle(.switch)
             }
         }
     }

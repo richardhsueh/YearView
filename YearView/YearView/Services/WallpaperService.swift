@@ -46,6 +46,7 @@ class WallpaperService: ObservableObject {
     func updateWallpaper() async {
         guard !isUpdating else { return }
         isUpdating = true
+        defer { isUpdating = false }
         errorMessage = nil
         
         print("Starting wallpaper update...")
@@ -69,8 +70,6 @@ class WallpaperService: ObservableObject {
             errorMessage = error.localizedDescription
             await showErrorNotification(error: error)
         }
-        
-        isUpdating = false
     }
     
     private func showNotification(title: String, message: String) async {

@@ -53,6 +53,7 @@ class WallpaperRenderer {
         let verticalDaySpacing = await layoutSettings.verticalDaySpacing
         let fontFamily = await layoutSettings.fontFamily
         let markPassedDays = await layoutSettings.markPassedDays
+        let showWeekendHighlight = await layoutSettings.showWeekendHighlight
         let theme = themeManager.currentTheme
         
         print("📐 Rendering wallpaper with fontSize: \(baseFontSize), hMonthSpacing: \(horizontalMonthSpacing), vMonthSpacing: \(verticalMonthSpacing), hDaySpacing: \(horizontalDaySpacing), vDaySpacing: \(verticalDaySpacing), Font=\(fontFamily)")
@@ -69,6 +70,7 @@ class WallpaperRenderer {
                 verticalDaySpacing: CGFloat(verticalDaySpacing),
                 fontFamily: fontFamily,
                 markPassedDays: markPassedDays,
+                showWeekendHighlight: showWeekendHighlight,
                 theme: theme
             )
             
@@ -215,7 +217,7 @@ class WallpaperRenderer {
         return (width: monthWidth, height: monthHeight)
     }
     
-    private func createWallpaperImage(yearCalendar: YearCalendar, size: CGSize, baseFontSize: CGFloat, horizontalMonthSpacing: CGFloat, verticalMonthSpacing: CGFloat, horizontalDaySpacing: CGFloat, verticalDaySpacing: CGFloat, fontFamily: String, markPassedDays: Bool, theme: Theme) -> NSImage {
+    private func createWallpaperImage(yearCalendar: YearCalendar, size: CGSize, baseFontSize: CGFloat, horizontalMonthSpacing: CGFloat, verticalMonthSpacing: CGFloat, horizontalDaySpacing: CGFloat, verticalDaySpacing: CGFloat, fontFamily: String, markPassedDays: Bool, showWeekendHighlight: Bool, theme: Theme) -> NSImage {
         let image = NSImage(size: size)
         
         image.lockFocus()
@@ -252,7 +254,7 @@ class WallpaperRenderer {
                 let y = offsetY + gridHeight - (monthHeight + verticalMonthSpacing) * CGFloat(row) - monthHeight
                 
                 let monthRect = CGRect(x: x, y: y, width: monthWidth, height: monthHeight)
-                drawMonth(month: month, in: monthRect, baseFontSize: baseFontSize, horizontalDaySpacing: horizontalDaySpacing, verticalDaySpacing: verticalDaySpacing, fontFamily: fontFamily, markPassedDays: markPassedDays, theme: theme)
+                drawMonth(month: month, in: monthRect, baseFontSize: baseFontSize, horizontalDaySpacing: horizontalDaySpacing, verticalDaySpacing: verticalDaySpacing, fontFamily: fontFamily, markPassedDays: markPassedDays, showWeekendHighlight: showWeekendHighlight, theme: theme)
             }
         }
         
@@ -279,9 +281,9 @@ class WallpaperRenderer {
         return image
     }
     
-    private func drawMonth(month: MonthCalendar, in rect: CGRect, baseFontSize: CGFloat, horizontalDaySpacing: CGFloat, verticalDaySpacing: CGFloat, fontFamily: String, markPassedDays: Bool, theme: Theme) {
+    private func drawMonth(month: MonthCalendar, in rect: CGRect, baseFontSize: CGFloat, horizontalDaySpacing: CGFloat, verticalDaySpacing: CGFloat, fontFamily: String, markPassedDays: Bool, showWeekendHighlight: Bool, theme: Theme) {
         let context = NSGraphicsContext.current?.cgContext
-        let today = Date()
+        let todayStart = Calendar.current.startOfDay(for: Date())
         
         // Calculate font sizes from baseFontSize
         let headerFontSize = baseFontSize * LayoutMetrics.headerFontMultiplier
@@ -351,6 +353,14 @@ class WallpaperRenderer {
             let cellY = gridTop - (dayRowHeight + verticalDaySpacing) * CGFloat(currentRow) - dayRowHeight
             let cellRect = CGRect(x: cellX, y: cellY, width: dayCellWidth, height: dayRowHeight)
             
+            // Draw weekend background highlight (subtle rounded rect)
+            if showWeekendHighlight && day.isWeekend && !day.isToday {
+                theme.weekend.setFill()
+                let backgroundRect = cellRect.insetBy(dx: 2, dy: 2)
+                let path = NSBezierPath(roundedRect: backgroundRect, xRadius: 4.0, yRadius: 4.0)
+                path.fill()
+            }
+            
             // Draw today highlight circle
             if day.isToday {
                 context?.setFillColor(theme.accent.cgColor)
@@ -388,8 +398,8 @@ class WallpaperRenderer {
             
             dayText.draw(at: CGPoint(x: dayX, y: dayY), withAttributes: dayAttributes)
             
-            // Draw diagonal line on passed days
-            if markPassedDays && day.date < today && !day.isToday {
+            // Draw diagonal line on passed days (compare dates at midnight to avoid time-of-day issues)
+            if markPassedDays && day.date < todayStart && !day.isToday {
                 context?.saveGState()
                 
                 let strikethroughColor = theme.strikethrough ?? theme.accent
