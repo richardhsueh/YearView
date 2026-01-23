@@ -68,6 +68,7 @@ struct LayoutSettingsSnapshot {
     let fontFamily: String
     let markPassedDays: Bool
     let showWeekendHighlight: Bool
+    let showUpdateTime: Bool
 }
 
 @MainActor
@@ -82,6 +83,7 @@ class LayoutSettings: ObservableObject {
     private let fontFamilyKey = "fontFamily"
     private let markPassedDaysKey = "markPassedDays"
     private let showWeekendHighlightKey = "showWeekendHighlight"
+    private let showUpdateTimeKey = "showUpdateTime"
     
     @Published var baseFontSize: Double {
         didSet {
@@ -139,6 +141,13 @@ class LayoutSettings: ObservableObject {
         }
     }
     
+    @Published var showUpdateTime: Bool {
+        didSet {
+            UserDefaults.standard.set(showUpdateTime, forKey: showUpdateTimeKey)
+            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
+        }
+    }
+    
     private init() {
         // Load saved values or use defaults
         self.baseFontSize = UserDefaults.standard.object(forKey: baseFontSizeKey) as? Double ?? 18.0
@@ -149,6 +158,7 @@ class LayoutSettings: ObservableObject {
         self.fontFamily = UserDefaults.standard.string(forKey: fontFamilyKey) ?? ".AppleSystemUIFont"
         self.markPassedDays = UserDefaults.standard.object(forKey: markPassedDaysKey) as? Bool ?? false
         self.showWeekendHighlight = UserDefaults.standard.object(forKey: showWeekendHighlightKey) as? Bool ?? false
+        self.showUpdateTime = UserDefaults.standard.object(forKey: showUpdateTimeKey) as? Bool ?? false
     }
     
     func reset() {
@@ -156,6 +166,7 @@ class LayoutSettings: ObservableObject {
         fontFamily = ".AppleSystemUIFont"
         markPassedDays = false
         showWeekendHighlight = false
+        showUpdateTime = false
     }
     
     // MARK: - Preset Support
@@ -192,7 +203,8 @@ class LayoutSettings: ObservableObject {
             verticalDaySpacing: verticalDaySpacing,
             fontFamily: fontFamily,
             markPassedDays: markPassedDays,
-            showWeekendHighlight: showWeekendHighlight
+            showWeekendHighlight: showWeekendHighlight,
+            showUpdateTime: showUpdateTime
         )
     }
     
@@ -205,6 +217,7 @@ class LayoutSettings: ObservableObject {
         fontFamily = snapshot.fontFamily
         markPassedDays = snapshot.markPassedDays
         showWeekendHighlight = snapshot.showWeekendHighlight
+        showUpdateTime = snapshot.showUpdateTime
     }
     
     // MARK: - Font Helpers

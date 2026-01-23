@@ -12,6 +12,7 @@ class DailyScheduler {
     
     private var timer: Timer?
     private let updateCallback: () async -> Void
+    private var lastUpdateDate: Date?
     
     init(updateCallback: @escaping () async -> Void) {
         self.updateCallback = updateCallback
@@ -19,6 +20,9 @@ class DailyScheduler {
     
     /// Start scheduling daily updates
     func start() {
+        // Record current date as last update date
+        lastUpdateDate = Date()
+        
         scheduleNextUpdate()
         
         // Observe system wake notifications
@@ -37,7 +41,15 @@ class DailyScheduler {
             object: nil
         )
         
-        print("✅ DailyScheduler started - monitoring system clock changes and wake events")
+        // Observe calendar day changes - more reliable than timer alone
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(calendarDayDidChange),
+            name: .NSCalendarDayChanged,
+            object: nil
+        )
+        
+        print("✅ DailyScheduler started - monitoring day changes, system clock changes, and wake events")
     }
     
     /// Stop scheduling
@@ -49,6 +61,10 @@ class DailyScheduler {
     }
     
     private func scheduleNextUpdate() {
+        // Invalidate existing timer
+        timer?.invalidate()
+        timer = nil
+        
         // Calculate time until next midnight
         let calendar = Calendar.current
         let now = Date()
@@ -57,7 +73,7 @@ class DailyScheduler {
         components.day! += 1
         components.hour = 0
         components.minute = 0
-        components.second = 0
+        components.second = 1  // 1 second after midnight for safety
         
         guard let nextMidnight = calendar.date(from: components) else {
             print("Failed to calculate next midnight")
@@ -66,19 +82,23 @@ class DailyScheduler {
         
         let timeInterval = nextMidnight.timeIntervalSince(now)
         
-        print("Scheduling next wallpaper update at: \(nextMidnight)")
+        print("Scheduling next wallpaper update at: \(nextMidnight) (in \(Int(timeInterval)) seconds)")
         
-        // Schedule timer
-        timer = Timer.scheduledTimer(
-            withTimeInterval: timeInterval,
-            repeats: false
-        ) { [weak self] _ in
+        // Create and schedule timer with tolerance for better power efficiency
+        let newTimer = Timer(timeInterval: timeInterval, repeats: false) { [weak self] _ in
             self?.performUpdate()
         }
+        newTimer.tolerance = 60  // Allow up to 60 seconds tolerance for power efficiency
+        
+        // Add timer to common run loop modes to ensure it fires even when app is in background
+        RunLoop.main.add(newTimer, forMode: .common)
+        timer = newTimer
     }
     
     private func performUpdate() {
-        print("Performing scheduled wallpaper update")
+        print("Performing scheduled wallpaper update at \(Date())")
+        
+        lastUpdateDate = Date()
         
         Task { @MainActor in
             await updateCallback()
@@ -88,29 +108,51 @@ class DailyScheduler {
         scheduleNextUpdate()
     }
     
-    @objc private func systemDidWake() {
-        print("System woke up, checking if update is needed")
+    /// Check if the day has changed since the last update
+    private func hasDayChangedSinceLastUpdate() -> Bool {
+        guard let lastUpdate = lastUpdateDate else {
+            return true  // No previous update, consider it changed
+        }
         
-        // Check if we missed an update while sleeping
         let calendar = Calendar.current
-        let now = Date()
+        let lastDay = calendar.startOfDay(for: lastUpdate)
+        let today = calendar.startOfDay(for: Date())
+        
+        return today > lastDay
+    }
+    
+    @objc private func systemDidWake() {
+        print("System woke up at \(Date()), checking if update is needed")
         
         // If timer is invalid or expired, reschedule
         if timer == nil || !(timer?.isValid ?? false) {
+            print("  Timer was invalid, rescheduling")
             scheduleNextUpdate()
         }
         
-        // Check if we're past midnight and need to update
-        let hour = calendar.component(.hour, from: now)
-        if hour >= 0 && hour < 1 {
+        // Check if the day has changed since last update
+        if hasDayChangedSinceLastUpdate() {
+            print("  Day has changed since last update, triggering update")
+            performUpdate()
+        } else {
+            print("  Day has not changed, no update needed")
+        }
+    }
+    
+    @objc private func calendarDayDidChange(_ notification: Notification) {
+        print("📅 Calendar day changed notification received at \(Date())")
+        
+        // Reschedule timer for the new day
+        scheduleNextUpdate()
+        
+        // Perform update for the new day
+        if hasDayChangedSinceLastUpdate() {
             performUpdate()
         }
     }
     
     @objc private func systemClockDidChange(_ notification: Notification) {
-        print("⏰⏰⏰ SYSTEM CLOCK CHANGED NOTIFICATION RECEIVED ⏰⏰⏰")
-        print("   Notification object: \(String(describing: notification.object))")
-        print("   Current date: \(Date())")
+        print("⏰ System clock changed notification received at \(Date())")
         
         // Invalidate current timer and reschedule
         timer?.invalidate()
@@ -118,10 +160,11 @@ class DailyScheduler {
         
         // Perform immediate update since date may have changed
         Task { @MainActor in
-            print("   Executing wallpaper update on main actor...")
+            print("   Executing wallpaper update due to clock change...")
             await updateCallback()
             print("   Update complete, rescheduling next update")
-            // Schedule next update after the update completes
+            // Update the last update date and schedule next update
+            lastUpdateDate = Date()
             scheduleNextUpdate()
         }
     }

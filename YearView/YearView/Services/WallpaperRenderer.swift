@@ -54,9 +54,11 @@ class WallpaperRenderer {
         let fontFamily = await layoutSettings.fontFamily
         let markPassedDays = await layoutSettings.markPassedDays
         let showWeekendHighlight = await layoutSettings.showWeekendHighlight
+        let showUpdateTime = await layoutSettings.showUpdateTime
         let theme = themeManager.currentTheme
+        let updateTime = Date()
         
-        print("📐 Rendering wallpaper with fontSize: \(baseFontSize), hMonthSpacing: \(horizontalMonthSpacing), vMonthSpacing: \(verticalMonthSpacing), hDaySpacing: \(horizontalDaySpacing), vDaySpacing: \(verticalDaySpacing), Font=\(fontFamily)")
+        print("📐 Rendering wallpaper with fontSize: \(baseFontSize), hMonthSpacing: \(horizontalMonthSpacing), vMonthSpacing: \(verticalMonthSpacing), hDaySpacing: \(horizontalDaySpacing), vDaySpacing: \(verticalDaySpacing), Font=\(fontFamily), showUpdateTime=\(showUpdateTime)")
         
         return try await Task.detached(priority: .userInitiated) {
             let screenSize = self.getScreenSize()
@@ -71,6 +73,8 @@ class WallpaperRenderer {
                 fontFamily: fontFamily,
                 markPassedDays: markPassedDays,
                 showWeekendHighlight: showWeekendHighlight,
+                showUpdateTime: showUpdateTime,
+                updateTime: updateTime,
                 theme: theme
             )
             
@@ -217,7 +221,7 @@ class WallpaperRenderer {
         return (width: monthWidth, height: monthHeight)
     }
     
-    private func createWallpaperImage(yearCalendar: YearCalendar, size: CGSize, baseFontSize: CGFloat, horizontalMonthSpacing: CGFloat, verticalMonthSpacing: CGFloat, horizontalDaySpacing: CGFloat, verticalDaySpacing: CGFloat, fontFamily: String, markPassedDays: Bool, showWeekendHighlight: Bool, theme: Theme) -> NSImage {
+    private func createWallpaperImage(yearCalendar: YearCalendar, size: CGSize, baseFontSize: CGFloat, horizontalMonthSpacing: CGFloat, verticalMonthSpacing: CGFloat, horizontalDaySpacing: CGFloat, verticalDaySpacing: CGFloat, fontFamily: String, markPassedDays: Bool, showWeekendHighlight: Bool, showUpdateTime: Bool, updateTime: Date, theme: Theme) -> NSImage {
         let image = NSImage(size: size)
         
         image.lockFocus()
@@ -276,9 +280,42 @@ class WallpaperRenderer {
         
         watermarkText.draw(at: CGPoint(x: watermarkX, y: watermarkY), withAttributes: watermarkAttributes)
         
+        // Draw update time in bottom-right corner if enabled
+        if showUpdateTime {
+            drawUpdateTime(updateTime: updateTime, in: size, fontFamily: fontFamily, theme: theme)
+        }
+        
         image.unlockFocus()
         
         return image
+    }
+    
+    /// Draw the update time in the bottom-right corner
+    private func drawUpdateTime(updateTime: Date, in size: CGSize, fontFamily: String, theme: Theme) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let timeString = "Updated: \(formatter.string(from: updateTime))"
+        
+        // Use a smaller font size for the timestamp
+        let fontSize: CGFloat = 14.0
+        let font = createFont(family: fontFamily, size: fontSize, weight: .regular)
+        
+        // Use subtext color with some transparency
+        let textColor = theme.subtext.withAlphaComponent(0.6)
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: textColor
+        ]
+        
+        let textSize = timeString.size(withAttributes: attributes)
+        
+        // Position in bottom-right corner with padding
+        let padding: CGFloat = 20.0
+        let x = size.width - textSize.width - padding
+        let y = padding
+        
+        timeString.draw(at: CGPoint(x: x, y: y), withAttributes: attributes)
     }
     
     private func drawMonth(month: MonthCalendar, in rect: CGRect, baseFontSize: CGFloat, horizontalDaySpacing: CGFloat, verticalDaySpacing: CGFloat, fontFamily: String, markPassedDays: Bool, showWeekendHighlight: Bool, theme: Theme) {

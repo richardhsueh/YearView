@@ -67,6 +67,7 @@ struct SettingsWindow: View {
         .onChange(of: layoutSettings.fontFamily) { _ in updateWallpaperLive() }
         .onChange(of: layoutSettings.markPassedDays) { _ in updateWallpaperLive() }
         .onChange(of: layoutSettings.showWeekendHighlight) { _ in updateWallpaperLive() }
+        .onChange(of: layoutSettings.showUpdateTime) { _ in updateWallpaperLive() }
         .onChange(of: themeStore.currentTheme) { _ in updateWallpaperLive() }
     }
     
@@ -238,6 +239,24 @@ struct SettingsWindow: View {
                                     .font(.system(size: 13, weight: .semibold))
                                 
                                 Text("Show background color on weekend days")
+                                    .font(.system(size: 11, weight: .regular))
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .toggleStyle(.switch)
+                    
+                    Toggle(isOn: $layoutSettings.showUpdateTime) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "clock")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(.accentColor)
+                            
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Show Update Time")
+                                    .font(.system(size: 13, weight: .semibold))
+                                
+                                Text("Display last update timestamp on wallpaper")
                                     .font(.system(size: 11, weight: .regular))
                                     .foregroundColor(.secondary)
                             }
