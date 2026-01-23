@@ -9,11 +9,31 @@ class WallpaperRenderer {
     private let themeManager: ThemeManager
     private let layoutSettings: LayoutSettings
     
+    // MARK: - Cached Resources
+    
+    /// Font cache to avoid repeated font lookups (thread-safe via nonisolated access pattern)
+    private var fontCache: [FontCacheKey: NSFont] = [:]
+    private let fontCacheLock = NSLock()
+    
+    /// Cached DateFormatter for update time display
+    private static let updateTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter
+    }()
+    
     // MARK: - Initialization
     
     init(themeManager: ThemeManager, layoutSettings: LayoutSettings) {
         self.themeManager = themeManager
         self.layoutSettings = layoutSettings
+    }
+    
+    /// Clear the font cache (call when font family changes)
+    func clearFontCache() {
+        fontCacheLock.lock()
+        fontCache.removeAll()
+        fontCacheLock.unlock()
     }
     
     // MARK: - Layout Constants
@@ -45,18 +65,21 @@ class WallpaperRenderer {
     /// - Parameter yearCalendar: The calendar data to render
     /// - Returns: URL to the generated wallpaper image
     func renderWallpaper(yearCalendar: YearCalendar) async throws -> URL {
-        // Capture main-actor values before entering detached task
-        let baseFontSize = await layoutSettings.baseFontSize
-        let horizontalMonthSpacing = await layoutSettings.horizontalMonthSpacing
-        let verticalMonthSpacing = await layoutSettings.verticalMonthSpacing
-        let horizontalDaySpacing = await layoutSettings.horizontalDaySpacing
-        let verticalDaySpacing = await layoutSettings.verticalDaySpacing
-        let fontFamily = await layoutSettings.fontFamily
-        let markPassedDays = await layoutSettings.markPassedDays
-        let showWeekendHighlight = await layoutSettings.showWeekendHighlight
-        let showUpdateTime = await layoutSettings.showUpdateTime
+        // Capture all main-actor values in a single batch before entering detached task
+        let settings = await layoutSettings.createSnapshot()
         let theme = themeManager.currentTheme
         let updateTime = Date()
+        
+        // Extract values from snapshot for clarity
+        let baseFontSize = settings.baseFontSize
+        let horizontalMonthSpacing = settings.horizontalMonthSpacing
+        let verticalMonthSpacing = settings.verticalMonthSpacing
+        let horizontalDaySpacing = settings.horizontalDaySpacing
+        let verticalDaySpacing = settings.verticalDaySpacing
+        let fontFamily = settings.fontFamily
+        let markPassedDays = settings.markPassedDays
+        let showWeekendHighlight = settings.showWeekendHighlight
+        let showUpdateTime = settings.showUpdateTime
         
         print("📐 Rendering wallpaper with fontSize: \(baseFontSize), hMonthSpacing: \(horizontalMonthSpacing), vMonthSpacing: \(verticalMonthSpacing), hDaySpacing: \(horizontalDaySpacing), vDaySpacing: \(verticalDaySpacing), Font=\(fontFamily), showUpdateTime=\(showUpdateTime)")
         
@@ -133,7 +156,31 @@ class WallpaperRenderer {
     }
     
     /// Helper to create a font with the specified family, size, and weight
+    /// Uses caching to avoid repeated expensive font lookups
     private nonisolated func createFont(family: String, size: CGFloat, weight: NSFont.Weight) -> NSFont {
+        let cacheKey = FontCacheKey(family: family, size: size, weight: weight)
+        
+        // Check cache first (thread-safe access)
+        fontCacheLock.lock()
+        if let cachedFont = fontCache[cacheKey] {
+            fontCacheLock.unlock()
+            return cachedFont
+        }
+        fontCacheLock.unlock()
+        
+        // Create font
+        let font = createFontUncached(family: family, size: size, weight: weight)
+        
+        // Store in cache (thread-safe)
+        fontCacheLock.lock()
+        fontCache[cacheKey] = font
+        fontCacheLock.unlock()
+        
+        return font
+    }
+    
+    /// Internal font creation without caching
+    private nonisolated func createFontUncached(family: String, size: CGFloat, weight: NSFont.Weight) -> NSFont {
         // Handle system font specially
         if family == ".AppleSystemUIFont" || family.isEmpty {
             return NSFont.systemFont(ofSize: size, weight: weight)
@@ -292,9 +339,7 @@ class WallpaperRenderer {
     
     /// Draw the update time in the bottom-right corner
     private func drawUpdateTime(updateTime: Date, in size: CGSize, fontFamily: String, theme: Theme) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let timeString = "Updated: \(formatter.string(from: updateTime))"
+        let timeString = "Updated: \(Self.updateTimeFormatter.string(from: updateTime))"
         
         // Use a smaller font size for the timestamp
         let fontSize: CGFloat = 14.0
@@ -462,6 +507,24 @@ class WallpaperRenderer {
                 currentRow += 1
             }
         }
+    }
+}
+
+// MARK: - Font Cache Key
+
+private struct FontCacheKey: Hashable {
+    let family: String
+    let size: CGFloat
+    let weight: NSFont.Weight
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(family)
+        hasher.combine(size)
+        hasher.combine(weight.rawValue)
+    }
+    
+    static func == (lhs: FontCacheKey, rhs: FontCacheKey) -> Bool {
+        lhs.family == rhs.family && lhs.size == rhs.size && lhs.weight == rhs.weight
     }
 }
 

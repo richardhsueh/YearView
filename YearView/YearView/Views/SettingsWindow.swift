@@ -18,6 +18,10 @@ struct SettingsWindow: View {
     @State private var originalTheme: Theme?
     @State private var showAdvancedSpacing = false
     
+    // Debouncing for wallpaper updates
+    @State private var debounceTask: Task<Void, Never>?
+    private let debounceInterval: TimeInterval = 0.3 // 300ms debounce
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
@@ -330,7 +334,28 @@ struct SettingsWindow: View {
     
     // MARK: - Actions
     
+    /// Debounced wallpaper update to prevent excessive renders during rapid settings changes
     private func updateWallpaperLive() {
+        // Cancel any pending debounced update
+        debounceTask?.cancel()
+        
+        // Schedule a new debounced update
+        debounceTask = Task { @MainActor in
+            do {
+                try await Task.sleep(nanoseconds: UInt64(debounceInterval * 1_000_000_000))
+                // Only update if not cancelled
+                if !Task.isCancelled {
+                    await wallpaperService.updateWallpaper()
+                }
+            } catch {
+                // Task was cancelled, ignore
+            }
+        }
+    }
+    
+    /// Immediate wallpaper update without debouncing (for cancel/reset actions)
+    private func updateWallpaperImmediate() {
+        debounceTask?.cancel()
         Task { @MainActor in
             await wallpaperService.updateWallpaper()
         }
@@ -344,8 +369,8 @@ struct SettingsWindow: View {
         if let theme = originalTheme {
             themeStore.selectTheme(theme)
         }
-        // Update wallpaper with restored settings
-        updateWallpaperLive()
+        // Update wallpaper with restored settings (immediate, not debounced)
+        updateWallpaperImmediate()
         dismiss()
     }
     

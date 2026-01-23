@@ -58,8 +58,8 @@ enum DensityPreset: String, CaseIterable, Identifiable {
     }
 }
 
-// MARK: - Settings Snapshot (for Save/Cancel)
-struct LayoutSettingsSnapshot {
+// MARK: - Settings Snapshot (for Save/Cancel and Batch Capture)
+struct LayoutSettingsSnapshot: Sendable {
     let baseFontSize: Double
     let horizontalMonthSpacing: Double
     let verticalMonthSpacing: Double
@@ -88,63 +88,54 @@ class LayoutSettings: ObservableObject {
     @Published var baseFontSize: Double {
         didSet {
             UserDefaults.standard.set(baseFontSize, forKey: baseFontSizeKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var horizontalMonthSpacing: Double {
         didSet {
             UserDefaults.standard.set(horizontalMonthSpacing, forKey: horizontalMonthSpacingKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var verticalMonthSpacing: Double {
         didSet {
             UserDefaults.standard.set(verticalMonthSpacing, forKey: verticalMonthSpacingKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var horizontalDaySpacing: Double {
         didSet {
             UserDefaults.standard.set(horizontalDaySpacing, forKey: horizontalDaySpacingKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var verticalDaySpacing: Double {
         didSet {
             UserDefaults.standard.set(verticalDaySpacing, forKey: verticalDaySpacingKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var fontFamily: String {
         didSet {
             UserDefaults.standard.set(fontFamily, forKey: fontFamilyKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var markPassedDays: Bool {
         didSet {
             UserDefaults.standard.set(markPassedDays, forKey: markPassedDaysKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var showWeekendHighlight: Bool {
         didSet {
             UserDefaults.standard.set(showWeekendHighlight, forKey: showWeekendHighlightKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
     @Published var showUpdateTime: Bool {
         didSet {
             UserDefaults.standard.set(showUpdateTime, forKey: showUpdateTimeKey)
-            NotificationCenter.default.post(name: .layoutSettingsDidChange, object: nil)
         }
     }
     
@@ -222,11 +213,14 @@ class LayoutSettings: ObservableObject {
     
     // MARK: - Font Helpers
     
-    static var availableFontFamilies: [String] {
+    /// Cached list of available font families (computed once on first access)
+    /// Using nonisolated(unsafe) because font families don't change during app lifecycle
+    /// and NSFontManager.shared.availableFontFamilies is thread-safe for reading
+    private nonisolated(unsafe) static let _cachedFontFamilies: [String] = {
         return NSFontManager.shared.availableFontFamilies.sorted()
+    }()
+    
+    static var availableFontFamilies: [String] {
+        return _cachedFontFamilies
     }
-}
-
-extension Notification.Name {
-    static let layoutSettingsDidChange = Notification.Name("layoutSettingsDidChange")
 }

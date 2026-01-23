@@ -3,16 +3,29 @@ import AppKit
 
 class WallpaperManager {
     
+    /// Track if AppleScript has failed before to avoid repeated attempts
+    private var appleScriptFailed = false
+    
     /// Set wallpaper for all screens and all Spaces (virtual desktops)
-    /// Uses AppleScript to ensure wallpaper is set across all Spaces
+    /// Uses NSWorkspace as primary method, with AppleScript as optional enhancement for multi-Space support
     func setWallpaper(imageURL: URL) throws {
         // Verify the image exists
         guard FileManager.default.fileExists(atPath: imageURL.path) else {
             throw WallpaperError.imageNotFound(path: imageURL.path)
         }
         
-        // Use AppleScript to set wallpaper for all desktops (all Spaces on all screens)
-        // This is the most reliable way to sync across all virtual desktops
+        // Primary method: NSWorkspace API (reliable, no special permissions needed)
+        try setWallpaperWithNSWorkspace(imageURL: imageURL)
+        
+        // Optional: Try AppleScript for multi-Space support (only if not previously failed)
+        if !appleScriptFailed {
+            tryAppleScriptForAllSpaces(imageURL: imageURL)
+        }
+    }
+    
+    /// Try to set wallpaper for all Spaces using AppleScript (optional enhancement)
+    /// This is best-effort and failures are silently ignored since NSWorkspace already succeeded
+    private func tryAppleScriptForAllSpaces(imageURL: URL) {
         let script = """
             tell application "System Events"
                 tell every desktop
@@ -25,24 +38,18 @@ class WallpaperManager {
         if let scriptObject = NSAppleScript(source: script) {
             scriptObject.executeAndReturnError(&error)
             
-            if let error = error {
-                let errorMessage = error[NSAppleScript.errorMessage] as? String ?? "Unknown AppleScript error"
-                print("AppleScript error: \(errorMessage)")
-                
-                // Fall back to NSWorkspace API for current Space only
-                print("Falling back to NSWorkspace API...")
-                try setWallpaperWithNSWorkspace(imageURL: imageURL)
-            } else {
-                print("Successfully set wallpaper for all desktops via AppleScript")
+            if error != nil {
+                // AppleScript failed - likely missing Automation permissions
+                // Mark as failed to avoid repeated attempts
+                appleScriptFailed = true
+                // Don't log error since NSWorkspace already succeeded
             }
         } else {
-            // AppleScript creation failed, fall back to NSWorkspace
-            print("Failed to create AppleScript, falling back to NSWorkspace API...")
-            try setWallpaperWithNSWorkspace(imageURL: imageURL)
+            appleScriptFailed = true
         }
     }
     
-    /// Fallback method using NSWorkspace API (only affects current Space)
+    /// Primary method using NSWorkspace API
     private func setWallpaperWithNSWorkspace(imageURL: URL) throws {
         let workspace = NSWorkspace.shared
         let screens = NSScreen.screens
@@ -68,6 +75,7 @@ class WallpaperManager {
         
         // Report results
         if failedScreens.isEmpty {
+            print("✅ Wallpaper set successfully for \(successCount) screen(s)")
             return
         } else if successCount == 0 {
             throw WallpaperError.failedToSetWallpaper(underlyingError: failedScreens[0].error)

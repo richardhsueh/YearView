@@ -15,10 +15,8 @@ struct YearViewApp: App {
             MenuContentView()
                 .environmentObject(wallpaperService)
                 .environmentObject(themeStore)
-                .task {
-                    // Ensure wallpaper updates on first launch
-                    await wallpaperService.updateWallpaper()
-                }
+            // Note: Initial update is handled by WallpaperService.init()
+            // Removed duplicate .task to avoid redundant wallpaper generation
         }
     }
     

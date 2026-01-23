@@ -55,6 +55,15 @@ struct MenuContentView: View {
             }
             .keyboardShortcut(",")
             
+            // Manual refresh button
+            Button("Refresh Wallpaper") {
+                Task {
+                    await wallpaperService.updateWallpaper()
+                }
+            }
+            .keyboardShortcut("r")
+            .disabled(wallpaperService.isUpdating)
+            
             Divider()
             
             // Quit
@@ -65,5 +74,7 @@ struct MenuContentView: View {
         }
         .padding()
         .frame(width: 250)
+        // Note: Initial update is handled by WallpaperService.init()
+        // No .task needed here to avoid duplicate updates
     }
 }

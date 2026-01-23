@@ -39,8 +39,11 @@ extension Calendar {
     func generateYearData(for year: Int) -> YearCalendar {
         var months: [MonthCalendar] = []
         
+        // Cache today's date once for all month generation
+        let today = Date()
+        
         for month in 1...12 {
-            if let monthData = generateMonthData(year: year, month: month) {
+            if let monthData = generateMonthData(year: year, month: month, today: today) {
                 months.append(monthData)
             }
         }
@@ -49,7 +52,11 @@ extension Calendar {
     }
     
     /// Generate single month calendar data
-    func generateMonthData(year: Int, month: Int) -> MonthCalendar? {
+    /// - Parameters:
+    ///   - year: The year
+    ///   - month: The month (1-12)
+    ///   - today: Cached today's date to avoid repeated Date() calls
+    func generateMonthData(year: Int, month: Int, today: Date? = nil) -> MonthCalendar? {
         var components = DateComponents()
         components.year = year
         components.month = month
@@ -63,8 +70,12 @@ extension Calendar {
         let monthName = monthSymbols[month - 1]
         let firstWeekday = component(.weekday, from: firstDay)
         
+        // Use provided today or create new (fallback)
+        let todayDate = today ?? Date()
+        
+        // Pre-reserve capacity for days array
         var days: [DayData] = []
-        let today = Date()
+        days.reserveCapacity(range.count)
         
         for day in 1...range.count {
             var dayComponents = DateComponents()
@@ -76,7 +87,7 @@ extension Calendar {
             
             let weekday = component(.weekday, from: dayDate)
             let isWeekend = (weekday == 1 || weekday == 7) // Sunday or Saturday
-            let isToday = isDate(dayDate, inSameDayAs: today)
+            let isToday = isDate(dayDate, inSameDayAs: todayDate)
             
             days.append(DayData(
                 day: day,
